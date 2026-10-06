@@ -1,0 +1,50 @@
+name: Mirror DeepSeeker feature branch
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+
+jobs:
+  mirror:
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout target repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Mirror source branch
+        run: |
+          set -euo pipefail
+
+          rm -rf /tmp/source
+          git clone --depth 1 --branch feature/foundations-immersion-multiplayer-20261004             https://github.com/kaydenhaas49-sys/DeepSeeker.git /tmp/source
+
+          rm -rf ./*
+          rm -rf ./.??* || true
+
+          cp -a /tmp/source/. .
+
+          rm -f .github/workflows/mirror.yml
+
+      - name: Commit mirrored branch
+        run: |
+          set -euo pipefail
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          git add -A
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "Mirror feature/foundations-immersion-multiplayer-20261004 [skip ci]"
+          git push origin HEAD:main

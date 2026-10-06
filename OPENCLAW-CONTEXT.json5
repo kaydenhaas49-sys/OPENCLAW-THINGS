@@ -1,0 +1,21 @@
+// OpenClaw model-context preset for Qwen3-Coder-Next.
+// Merge the model entry into your active provider in ~/.openclaw/openclaw.json.
+//
+// Qwen3-Coder-Next supports 262,144 native tokens.
+// 131,072 is a practical long-context target for local GGUF use.
+//
+// Example provider model entry:
+//
+// models: {
+//   providers: {
+//     YOUR_PROVIDER: {
+//       models: [
+//         {
+//           id: "Qwen3-Coder-Next-Q4_K_M",
+//           contextWindow: 262144,
+//           contextTokens: 131072
+//         }
+//       ]
+//     }
+//   }
+// }

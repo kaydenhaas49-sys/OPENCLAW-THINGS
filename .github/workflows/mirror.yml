@@ -27,7 +27,11 @@ jobs:
 
           rsync -a --delete --exclude='.git' /tmp/source/ ./
 
-          rm -f .github/workflows/mirror.yml
+          if [ -d .github/workflows ]; then
+            mkdir -p source-workflows/.github/workflows
+            cp -a .github/workflows/. source-workflows/.github/workflows/
+            rm -rf .github/workflows
+          fi
 
       - name: Commit mirrored branch
         run: |
